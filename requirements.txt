@@ -1,0 +1,8 @@
+ujson
+motor
+sanic
+aiohttp
+passlib
+marshmallow
+python-whois
+cached-property
