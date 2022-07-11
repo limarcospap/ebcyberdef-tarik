@@ -16,7 +16,8 @@ class Log:
         self.valid_status = list(map(lambda x: x.value, LogStatus))
         self.valid_status.remove('pending')
         self.valid_status.remove('processing')
-
+        self.has_new = False
+        
     async def add(self, category: str, content: str, **kwargs) -> str:
         log_id = hashlib.sha256((category + content).encode()).hexdigest()
         document = {'_id': log_id, 'category': category, 'content': content, 'status': LogStatus.PENDING.value,

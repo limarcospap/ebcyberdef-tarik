@@ -7,9 +7,19 @@ from .helper import get_http_result, get_tor_result, get_whois_result, get_geolo
 from sanic import Blueprint
 from sanic.request import Request
 from sanic.response import HTTPResponse, json
-
+import json
 
 logs_api = Blueprint('logs_api', url_prefix='/api/logs')
+
+
+@logs_api.websocket('/refresh-logs')
+async def teste_ws(request, ws):
+    while True:
+        data = dict()
+        data['name'] = 'marcos'
+        data['age'] = 9
+        await ws.send(json.dumps(data))
+        await asyncio.sleep(30)
 
 
 @logs_api.route('/search-logs', methods=['POST'])
@@ -34,6 +44,7 @@ async def search_logs(request: Request) -> HTTPResponse:
 
 @logs_api.route('/get-log', methods=['POST'])
 async def get_log(request: Request) -> HTTPResponse:
+    print("here")
     data, error = GetLog().load(request.json)
     if not error:
         response = await Config.current.logs.get(data['log_id'], 'admin')

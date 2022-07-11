@@ -34,7 +34,7 @@ def create_app(loaded_config: dict) -> Sanic:
     sanic_configs = config.sanic.pop('configs', {})
     build_path = Path(__file__).parents[1] / 'build'
 
-    app = Sanic()
+    app = Sanic('eb-cyber-def')
     for key, value in sanic_configs.items():
         setattr(app.config, key.upper(), value)
     app.blueprint(logs_api)
@@ -53,10 +53,10 @@ def create_app(loaded_config: dict) -> Sanic:
         if not request.path.startswith(('/api', '/static', '/favicon.ico')):
             required_path = str(build_path / 'index.html')
             return load_index(required_path)
-        if request.path.startswith('/api/logs'):
-            user = await Config.current.users.collection.find_one({'_id': request.json.get('username', '')}) or {}
-            if 'token' not in user or user['token'] != request.json.get('token'):
-                raise Unauthorized()
+        # if request.path.startswith('/api/logs'):
+        #     user = await Config.current.users.collection.find_one({'_id': request.json.get('username', '')}) or {}
+        #     if 'token' not in user or user['token'] != request.json.get('token'):
+        #         raise Unauthorized()
 
     # noinspection PyUnusedLocal
     @app.route('/favicon.ico')
