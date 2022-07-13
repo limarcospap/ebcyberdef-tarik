@@ -37,6 +37,10 @@ class Log:
             raise exceptions.LogNotFound(log_id)
         return job
 
+    async def get_all() -> dict:
+        return self.collection.find()
+    
+
     async def finish(self, log_id: str, status: str) -> str:
         update_to = {'status': status, 'status_modified_at': datetime.utcnow()}
         if status not in self.valid_status:

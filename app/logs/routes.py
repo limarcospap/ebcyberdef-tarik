@@ -15,10 +15,8 @@ logs_api = Blueprint('logs_api', url_prefix='/api/logs')
 @logs_api.websocket('/refresh-logs')
 async def teste_ws(request, ws):
     while True:
-        data = dict()
-        data['name'] = 'marcos'
-        data['age'] = 9
-        await ws.send(json.dumps(data))
+        data = await Config.current.logs.collection.find().to_list(length=None)
+        await ws.send(json.dumps(data, default=str))
         await asyncio.sleep(30)
 
 
@@ -63,11 +61,10 @@ async def get_log(request: Request) -> HTTPResponse:
 
 @logs_api.route('/add-dns-log', methods=['POST'])
 async def add_dns_log(request: Request) -> HTTPResponse:
-    data, error = AddLog().load(request.json)
-    if not error:
-        content = data['content'].split(' ')
-        return json_response(await Config.current.logs.add('DNS', data['content'], domain=content[3]))
-    raise InvalidInputs()
+    data = AddLog().load(request.json)
+    content = data['content'].split(' ')
+    return json_response(await Config.current.logs.add('DNS', data['content'], domain=content[3]))
+    #raise InvalidInputs()
 
 
 @logs_api.route('/finish-log', methods=['POST'])
