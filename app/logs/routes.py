@@ -64,7 +64,7 @@ async def add_dns_log(request: Request) -> HTTPResponse:
     data = AddLog().load(request.json)
     content = data['content'].split(' ')
     return json_response(await Config.current.logs.add('DNS', data['content'], domain=content[3]))
-    #raise InvalidInputs()
+    raise InvalidInputs()
 
 
 @logs_api.route('/finish-log', methods=['POST'])
