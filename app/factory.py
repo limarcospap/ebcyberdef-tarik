@@ -1,5 +1,6 @@
 from .logs.routes import logs_api
 from .users.routes import users_api
+from .saidas.routes import saidas_api
 from .config import Config
 from .response import json_response
 from .exceptions import ServerException, Unauthorized
@@ -39,6 +40,7 @@ def create_app(loaded_config: dict) -> Sanic:
         setattr(app.config, key.upper(), value)
     app.blueprint(logs_api)
     app.blueprint(users_api)
+    app.blueprint(saidas_api)
     app.static('/static', str(build_path / 'static'))
 
     def load_index(required_path: str) -> HTTPResponse:

@@ -7,6 +7,7 @@ from .helper import get_http_result, get_tor_result, get_whois_result, get_geolo
 from sanic import Blueprint
 from sanic.request import Request
 from sanic.response import HTTPResponse, json
+from sanic.log import logger
 import json
 
 logs_api = Blueprint('logs_api', url_prefix='/api/logs')

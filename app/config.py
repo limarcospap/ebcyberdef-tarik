@@ -1,5 +1,6 @@
 from .logs.log import Log
 from .users.user import User
+from .saidas.saida import Saida
 from datetime import datetime
 from aiohttp import ClientSession
 from cached_property import cached_property
@@ -37,3 +38,7 @@ class Config:
     @cached_property
     def users(self) -> User:
         return User(AsyncIOMotorClient(**self.mongo_config)[self.database][self.collections["users"]])
+
+    @cached_property
+    def saidas(self) -> Saida:
+        return Saida(AsyncIOMotorClient(**self.mongo_config)[self.database][self.collections["saidas"]])
